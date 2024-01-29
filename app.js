@@ -4,26 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var connectDatabase = require('./database/connection');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://172.30.1.20:27017,172.30.1.20:27018,172.30.1.20:27019', {
-  user: 'admin',
-  pass: 'admin',
-  dbName: 'test',
-  replicaSet: 'rs0'
-});
-mongoose.connection.on('connected', () => console.log('DB connected'));
-mongoose.connection.on('open', () => console.log('DB open'));
-mongoose.connection.on('disconnected', () => console.log('DB disconnected'));
-mongoose.connection.on('reconnected', () => console.log('DB reconnected'));
-mongoose.connection.on('disconnecting', () => console.log('DB disconnecting'));
-mongoose.connection.on('close', () => console.log('DB close'));
-
-
-
 var app = express();
+
+// connect database
+app.use(connectDatabase);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
